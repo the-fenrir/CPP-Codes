@@ -7,6 +7,16 @@
 #include <numeric>
 
 // ── Q1: Point2d ─────────────────────────────────────────────────────
+//
+// Design notes:
+//  • Two constructors: a defaulted no-arg one and a two-arg one. There's
+//    deliberately NO single-double constructor — that's what makes
+//    `Point2d third{ 4.0 };` fail to compile (the spec requires this).
+//  • Neither constructor is `explicit`. The two-arg constructor isn't a
+//    converting constructor (it takes two args), so `explicit` adds nothing.
+//    The no-arg one can't convert anyway.
+//  • `print()` and `distanceTo()` are `const` — they don't mutate state and
+//    callers may have a `const Point2d&`.
 class Point2d {
     double m_x{ 0.0 };
     double m_y{ 0.0 };
@@ -26,6 +36,19 @@ public:
 };
 
 // ── Q2: Fraction as a class ─────────────────────────────────────────
+//
+// Design notes:
+//  • `explicit` constructor (Q3 discussion). Without it, any int silently
+//    converts to a Fraction — `multiply(5)` would mean `multiply(Fraction{5,1})`,
+//    which is almost never what the caller intended.
+//  • `reduce()` is private — it's an internal invariant maintainer (every
+//    Fraction is stored in lowest terms with a positive denominator), not
+//    something the caller should call directly. Forces the class to keep the
+//    invariant for itself.
+//  • `multiply()` returns a Fraction *by value*, not by reference. The result
+//    is a fresh fraction whose lifetime must outlive the call site; returning
+//    a reference would dangle. With C++17 mandatory copy elision, the return
+//    costs nothing.
 class Fraction {
     int m_numerator;
     int m_denominator;

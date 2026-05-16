@@ -1,12 +1,16 @@
-// Chapter 15 quiz — random monster generator.
-//   a) scoped enum of monster types
-//   b) Monster class with member variables
-//   c) MonsterType is a nested enum inside Monster
-//   d) constructor
-//   e) getTypeString() and print()
-//   f) MonsterGenerator namespace with generate()
-//   g) name and roar helpers
-//   h) random selection
+// Chapter 15 quiz — Random Monster Generator.
+//
+// Each section is marked `// ── X) ──` mapping back to the problem parts:
+//   a) scoped MonsterType enum (then nested + unscoped inside Monster in c).
+//   b) Monster class skeleton — four private members.
+//   c) MonsterType moved INSIDE Monster as nested unscoped `enum Type`.
+//      Callers say `Monster::Skeleton`, not `MonsterType::Skeleton`.
+//   d) constructor accepting all four attributes.
+//   e) getTypeString() + print() with a dead-monster branch.
+//   f) MonsterGenerator namespace + generate().
+//   g) getName(int) and getRoar(int) helpers in the namespace.
+//   h) randomness via <random> (the site uses Random.h from lesson 8.15; we
+//      inline an equivalent so the folder stays standalone).
 #include <iostream>
 #include <random>
 #include <string>
@@ -14,8 +18,8 @@
 
 class Monster {
 public:
-    // c) nested scoped enum
-    enum class Type {
+    // ── c) nested unscoped enum (originally MonsterType in part a) ──
+    enum Type {
         Dragon,
         Goblin,
         Ogre,
@@ -24,17 +28,18 @@ public:
         Troll,
         Vampire,
         Zombie,
-        MaxMonsterTypes,
+        maxMonsterTypes,
     };
 
 private:
+    // ── b) four private members ──
     Type        m_type;
     std::string m_name;
     std::string m_roar;
     int         m_hitPoints;
 
 public:
-    // d) constructor
+    // ── d) constructor ──
     Monster(Type type, std::string name, std::string roar, int hp)
         : m_type{ type }
         , m_name{ std::move(name) }
@@ -42,68 +47,88 @@ public:
         , m_hitPoints{ hp }
     {}
 
-    // e) human-readable type
+    // ── e) getTypeString() ──
     std::string_view getTypeString() const {
         switch (m_type) {
-            case Type::Dragon:   return "dragon";
-            case Type::Goblin:   return "goblin";
-            case Type::Ogre:     return "ogre";
-            case Type::Orc:      return "orc";
-            case Type::Skeleton: return "skeleton";
-            case Type::Troll:    return "troll";
-            case Type::Vampire:  return "vampire";
-            case Type::Zombie:   return "zombie";
-            default:             return "???";
+            case Dragon:   return "dragon";
+            case Goblin:   return "goblin";
+            case Ogre:     return "ogre";
+            case Orc:      return "orc";
+            case Skeleton: return "skeleton";
+            case Troll:    return "troll";
+            case Vampire:  return "vampire";
+            case Zombie:   return "zombie";
+            default:       return "???";
         }
     }
 
-    // e) print
+    // ── e) print() — live vs. dead ──
     void print() const {
-        std::cout << m_name << " the " << getTypeString()
-                  << " has " << m_hitPoints << " hit points and says "
-                  << m_roar << '\n';
+        if (m_hitPoints <= 0) {
+            std::cout << m_name << " the " << getTypeString() << " is dead.\n";
+        } else {
+            std::cout << m_name << " the " << getTypeString()
+                      << " has " << m_hitPoints << " hit points and says "
+                      << m_roar << ".\n";
+        }
     }
 };
 
-// f) namespace for the generator
+// ── f) MonsterGenerator namespace ──
 namespace MonsterGenerator {
 
-    // g) name and roar pools
-    constexpr std::string_view s_names[] = {
-        "Blarg", "Moog", "Pksh", "Tyrn", "Mort", "Hans"
-    };
-    constexpr std::string_view s_roars[] = {
-        "*ROAR*", "*hiss*", "*growl*", "*snarl*", "*screech*", "*moan*"
-    };
-
-    // Helper: random int in [min, max].
+    // ── h) shared RNG, seeded once. <random> equivalent of the site's Random.h. ──
     int getRandomNumber(int min, int max) {
         static std::mt19937 mt{ std::random_device{}() };
         std::uniform_int_distribution<int> die{ min, max };
         return die(mt);
     }
 
-    template <std::size_t N>
-    std::string_view pick(const std::string_view (&arr)[N]) {
-        return arr[ getRandomNumber(0, static_cast<int>(N) - 1) ];
+    // ── g) name / roar pools, indexed 0..5 ──
+    std::string getName(int n) {
+        switch (n) {
+            case 0:  return "Blarg";
+            case 1:  return "Moog";
+            case 2:  return "Pksh";
+            case 3:  return "Tyrn";
+            case 4:  return "Mort";
+            case 5:  return "Hans";
+            default: return "???";
+        }
+    }
+    std::string getRoar(int n) {
+        switch (n) {
+            case 0:  return "*ROAR*";
+            case 1:  return "*hiss*";
+            case 2:  return "*growl*";
+            case 3:  return "*snarl*";
+            case 4:  return "*screech*";
+            case 5:  return "*moan*";
+            default: return "???";
+        }
     }
 
-    // h) generate a random Monster
+    // ── h) generate() with full randomness ──
     Monster generate() {
         auto type = static_cast<Monster::Type>(
-            getRandomNumber(0, static_cast<int>(Monster::Type::MaxMonsterTypes) - 1));
+            getRandomNumber(0, Monster::maxMonsterTypes - 1));
         return Monster{
             type,
-            std::string{ pick(s_names) },
-            std::string{ pick(s_roars) },
+            getName(getRandomNumber(0, 5)),
+            getRoar(getRandomNumber(0, 5)),
             getRandomNumber(1, 100),
         };
     }
 }
 
 int main() {
+    // Three random live monsters (hp is 1..100, always alive).
     for (int i = 0; i < 3; ++i) {
         Monster m = MonsterGenerator::generate();
         m.print();
     }
+
+    // Force a dead monster so we always exercise the other print() branch.
+    Monster dead{ Monster::Vampire, "Nibblez", "*hiss*", 0 };
+    dead.print();
 }
