@@ -3,7 +3,7 @@
 > learncpp.com: https://www.learncpp.com/cpp-tutorial/uninitialized-variables-and-undefined-behavior/
 
 ## Why it matters
-Reading a variable that was never initialized is **undefined behavior** (UB). UB is not "you get garbage" — it's "the standard places no requirement on what happens." The compiler is allowed to delete the surrounding code, return different values on each call, or do something stranger. This is the single largest source of "but it worked on my machine" bugs in C and C++.
+Reading a variable that was never initialized is **undefined behavior** (UB). UB is not "you get garbage" — it's "the standard, places no requirement, on what happens." The compiler is allowed to delete the surrounding code, return different values on each call, or do something stranger. This is the single largest source of "but it worked on my machine" bugs in C and C++.
 
 ## Key points
 - A built-in type variable defined without an initializer (`int x;`) holds an **indeterminate value**. Reading it = UB.

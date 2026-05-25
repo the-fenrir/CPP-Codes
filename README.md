@@ -1,6 +1,6 @@
 # CPP-Codes — learncpp.com Study Repo
 
-Personal study repo for [learncpp.com](https://www.learncpp.com/) — Chapters 1–15.
+Personal study repo for [learncpp.com](https://www.learncpp.com/) — Chapters 1–28.
 
 Each lesson lives in its own folder with a one-screen `NOTES.md` (cheat-sheet + *why it matters*) plus runnable `.cpp` examples. A single `make` target builds and runs any lesson.
 
@@ -23,6 +23,21 @@ Each lesson lives in its own folder with a one-screen `NOTES.md` (cheat-sheet + 
 | 13 | Compound Types: Enums and Structs           | [Chapter_13_Enums_and_Structs/](Chapter_13_Enums_and_Structs/README.md) |
 | 14 | Introduction to Classes                     | [Chapter_14_Intro_to_Classes/](Chapter_14_Intro_to_Classes/README.md) |
 | 15 | More on Classes                             | [Chapter_15_More_on_Classes/](Chapter_15_More_on_Classes/README.md) |
+| 16 | Dynamic Arrays: `std::vector`               | [Chapter_16_Vector/](Chapter_16_Vector/README.md) |
+| 17 | Fixed-Size Arrays: `std::array` and C-style | [Chapter_17_Fixed_Arrays/](Chapter_17_Fixed_Arrays/README.md) |
+| 18 | Iterators and Algorithms                    | [Chapter_18_Iterators_and_Algorithms/](Chapter_18_Iterators_and_Algorithms/README.md) |
+| 19 | Dynamic Allocation                          | [Chapter_19_Dynamic_Allocation/](Chapter_19_Dynamic_Allocation/README.md) |
+| 20 | Functions (pointers, lambdas, recursion)    | [Chapter_20_Functions/](Chapter_20_Functions/README.md) |
+| 21 | Operator Overloading                        | [Chapter_21_Operator_Overloading/](Chapter_21_Operator_Overloading/README.md) |
+| 22 | Move Semantics and Smart Pointers           | [Chapter_22_Move_Semantics_and_Smart_Pointers/](Chapter_22_Move_Semantics_and_Smart_Pointers/README.md) |
+| 23 | Object Relationships                        | [Chapter_23_Object_Relationships/](Chapter_23_Object_Relationships/README.md) |
+| 24 | Inheritance                                 | [Chapter_24_Inheritance/](Chapter_24_Inheritance/README.md) |
+| 25 | Virtual Functions                           | [Chapter_25_Virtual_Functions/](Chapter_25_Virtual_Functions/README.md) |
+| 26 | Templates and Classes                       | [Chapter_26_Templates_and_Classes/](Chapter_26_Templates_and_Classes/README.md) |
+| 27 | Exceptions                                  | [Chapter_27_Exceptions/](Chapter_27_Exceptions/README.md) |
+| 28 | Input and Output (I/O)                      | [Chapter_28_IO/](Chapter_28_IO/README.md) |
+
+> Chapters 18 and 19 on learncpp.com are currently marked "under construction" — the recap/quiz NOTES for those folders are synthesized from each chapter's actual lesson material, and the source NOTES.md flag this so future you knows.
 
 ## Layout
 
